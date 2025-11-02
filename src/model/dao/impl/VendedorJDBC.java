@@ -4,7 +4,6 @@
  */
 package model.dao.impl;
 
-
 import db.DB;
 import db.DbException;
 import java.sql.DriverManager;
@@ -35,59 +34,120 @@ public class VendedorJDBC implements VendedorDAO {
         this.conn = conn;
     }
 
-public void insert(Vendedor vendedor) {
-    PreparedStatement stm = null;
-    ResultSet rs = null;
+    public void insert(Vendedor vendedor) {
+        PreparedStatement stm = null;
+        ResultSet rs = null;
 
-    try {
-        stm = conn.prepareStatement(
-            "INSERT INTO seller " +
-            "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
-            "VALUES (?, ?, ?, ?, ?)",
-            Statement.RETURN_GENERATED_KEYS
-        );
+        try {
+            stm = conn.prepareStatement(
+                    "INSERT INTO seller "
+                    + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+                    + "VALUES (?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+            );
 
-        stm.setString(1, vendedor.getNome());
-        stm.setString(2, vendedor.getEmail());
-        stm.setDate(3, new java.sql.Date(vendedor.getDataAniversario().getTime()));
-        stm.setDouble(4, vendedor.getSalarioBase());
-        stm.setInt(5, vendedor.getDepartamentos().getId());
+            stm.setString(1, vendedor.getNome());
+            stm.setString(2, vendedor.getEmail());
+            stm.setDate(3, new java.sql.Date(vendedor.getDataAniversario().getTime()));
+            stm.setDouble(4, vendedor.getSalarioBase());
+            stm.setInt(5, vendedor.getDepartamentos().getId());
 
-        int linhasAfetadas = stm.executeUpdate();
+            int linhasAfetadas = stm.executeUpdate();
 
-        if (linhasAfetadas > 0) {
-            rs = stm.getGeneratedKeys();
-            if (rs.next()) {
-                int id = rs.getInt(1);
-                vendedor.setId(id);
+            if (linhasAfetadas > 0) {
+                rs = stm.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    vendedor.setId(id);
+                }
+            } else {
+                System.out.println("Nenhuma linha afetada!");
             }
-        } else {
-            System.out.println("Nenhuma linha afetada!");
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(stm);
         }
-
-    } catch (SQLException e) {
-        throw new DbException(e.getMessage());
-    } finally {
-        DB.closeResultSet(rs);
-        DB.closeStatement(stm);
     }
-}
-
 
     @Override
     public void update(Vendedor vendedor) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            stm = conn.prepareStatement(
+                    "UPDATE seller\n"
+                    + "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ?\n"
+                    + "WHERE Id = ?"
+            );
+
+            stm.setString(1, vendedor.getNome());
+            stm.setString(2, vendedor.getEmail());
+            stm.setDate(3, new java.sql.Date(vendedor.getDataAniversario().getTime()));
+            stm.setDouble(4, vendedor.getSalarioBase());
+            stm.setInt(5, vendedor.getDepartamentos().getId());
+            stm.setInt(6, vendedor.getId());
+            stm.executeUpdate();
+          
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+           
+            DB.closeStatement(stm);
+        }
     }
 
     @Override
-    public void deleteById(Integer id
-    ) {
+    public void deleteById(Integer id) {
+        /*
+        PreparedStatement stm = null;
+        ResultSet rs = null;
 
+        try {
+            stm = conn.prepareStatement(
+                    "INSERT INTO seller "
+                    + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+                    + "VALUES (?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
+            );
+
+            stm.setString(1, vendedor.getNome());
+            stm.setString(2, vendedor.getEmail());
+            stm.setDate(3, new java.sql.Date(vendedor.getDataAniversario().getTime()));
+            stm.setDouble(4, vendedor.getSalarioBase());
+            stm.setInt(5, vendedor.getDepartamentos().getId());
+
+            int linhasAfetadas = stm.executeUpdate();
+
+            if (linhasAfetadas > 0) {
+                rs = stm.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    vendedor.setId(id);
+                }
+            } else {
+                System.out.println("Nenhuma linha afetada!");
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(stm);
+        }
+    }
+
+
+         */
     }
 
     @Override
-    public Vendedor findById(Integer id
-    ) {
+    public Vendedor findById(Integer id) {
         PreparedStatement stm = null;
         ResultSet rs = null;
 

@@ -92,58 +92,37 @@ public class VendedorJDBC implements VendedorDAO {
             stm.setInt(5, vendedor.getDepartamentos().getId());
             stm.setInt(6, vendedor.getId());
             stm.executeUpdate();
-          
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
-           
+
             DB.closeStatement(stm);
         }
     }
 
     @Override
     public void deleteById(Integer id) {
-        /*
+
         PreparedStatement stm = null;
-        ResultSet rs = null;
+      
 
         try {
             stm = conn.prepareStatement(
-                    "INSERT INTO seller "
-                    + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
-                    + "VALUES (?, ?, ?, ?, ?)",
-                    Statement.RETURN_GENERATED_KEYS
+                    "DELETE FROM seller\n"
+                    + "WHERE Id = ?"
             );
 
-            stm.setString(1, vendedor.getNome());
-            stm.setString(2, vendedor.getEmail());
-            stm.setDate(3, new java.sql.Date(vendedor.getDataAniversario().getTime()));
-            stm.setDouble(4, vendedor.getSalarioBase());
-            stm.setInt(5, vendedor.getDepartamentos().getId());
-
-            int linhasAfetadas = stm.executeUpdate();
-
-            if (linhasAfetadas > 0) {
-                rs = stm.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    vendedor.setId(id);
-                }
-            } else {
-                System.out.println("Nenhuma linha afetada!");
-            }
+ 
+            stm.setInt(1,id);
+            stm.executeUpdate();
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         } finally {
-            DB.closeResultSet(rs);
+
             DB.closeStatement(stm);
         }
-    }
-
-
-         */
     }
 
     @Override

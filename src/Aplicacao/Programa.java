@@ -53,5 +53,10 @@ public class Programa {
         System.out.println("Dados atualizados veja o resultado abaixo:");
         System.out.println(vendedorDao.findById(3));
 
+        System.out.println("==========TESTE06 Deletando dados===========");
+        System.out.println("Dados deletados:");
+        vendedorDao.deleteById(3);
+        System.out.println("Dado deletado com sucesso!!");
+
     }
 }

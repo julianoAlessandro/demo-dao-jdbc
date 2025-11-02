@@ -4,6 +4,7 @@
  */
 package model;
 
+import db.DB;
 import model.dao.VendedorDAO;
 import model.dao.impl.VendedorJDBC;
 
@@ -13,7 +14,8 @@ import model.dao.impl.VendedorJDBC;
  */
 public class DAOFactory {
     public static VendedorDAO criarVendedorDAO(){
-        return new VendedorJDBC();
+       return new VendedorJDBC(DB.getConnection());
+
     }
     // programa não conhece a implementação apenas a interface realizar injeção de dependencia, não expoe a implementação do projeto
 }

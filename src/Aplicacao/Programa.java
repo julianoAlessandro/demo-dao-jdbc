@@ -4,7 +4,11 @@
  */
 package Aplicacao;
 
+import db.DB;
 import java.util.Date;
+import java.util.List;
+import model.DAOFactory;
+import model.dao.VendedorDAO;
 import model.entidades.Departamentos;
 import model.entidades.Vendedor;
 
@@ -13,9 +17,35 @@ import model.entidades.Vendedor;
  * @author Juliano
  */
 public class Programa {
-    public static void main(String args[]){
-        Departamentos departamento01 = new Departamentos(1,"RH");
-        Vendedor  vendedor01 = new Vendedor(1,"juliano","juliano86@gmail.com",new Date(),1.500,departamento01);
-        System.out.println(vendedor01);
+
+   public static void main(String args[]) {
+ System.out.println("===========TESTE01 encontrar vendedor pelo id=====");
+    VendedorDAO vendedorDao = DAOFactory.criarVendedorDAO();
+
+    Vendedor vendedor = vendedorDao.findById(3);
+    System.out.println(vendedor);
+
+    System.out.println("===========TESTE02 VENDEDOR PELO ID DO DEPARTAMENTO=====");
+    Departamentos departamentos = new Departamentos(2, null);
+    List<Vendedor> list = vendedorDao.findByDepartment(departamentos);
+
+    for (Vendedor vendedor02 : list) {
+        System.out.println(vendedor02);
     }
+    
+    System.out.println("===========TESTE03 retornando todos=====");
+  
+      List<Vendedor> listvendedor02 = vendedorDao.findAll();
+
+    for (Vendedor vendedor02 :listvendedor02 ) {
+        System.out.println(vendedor02);
+    }
+    
+       System.out.println("==========TESTE04 Realizando insercao de dados===========");
+       Vendedor vendedor05 = new Vendedor(null,"Greg","Gregsao@gmail.com",new Date(), 4000.0,departamentos);
+       vendedorDao.insert(vendedor05);
+       System.out.println("Inserção realizada com sucesso: " + vendedor05);
+    
+
+}
 }

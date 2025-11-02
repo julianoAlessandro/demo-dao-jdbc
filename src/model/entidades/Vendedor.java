@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class Vendedor implements Serializable {
     private static final long serialVersionUID = 1L;
-    private int id;
+    private Integer id;
     private String nome;
     private String email;
     private Date dataAniversario;
@@ -25,7 +25,7 @@ public class Vendedor implements Serializable {
         
     }
 
-    public Vendedor(int id, String nome, String email, Date dataAniversario, double salarioBase, Departamentos departamentos) {
+    public Vendedor(Integer id, String nome, String email, Date dataAniversario, double salarioBase, Departamentos departamentos) {
         this.id = id;
         this.nome = nome;
         this.email = email;
